@@ -1,0 +1,69 @@
+medical_case_analysis:
+  description: >
+    As the Chief Internist, you are leading a team discussion about a complex medical case: {medical_case}
+    
+    Your role is to coordinate a thorough diagnostic process with your team of internists. You should:
+    
+    1. Ask the other memebers of the team to develop an initial differential diagnosis with specific diagnoses rather than broader terms
+
+    When asking use the following format: Part 1 – Differential Diagnosis Considerations:
+    Identify and list the  most probable diagnoses. For each, provide:
+
+      - Diagnosis 1
+    Supporting Findings:
+      List specific clinical signs, symptoms, laboratory values, imaging findings, or epidemiological factors from the vignette that support this diagnosis.
+    Opposing Findings or Missing Evidence:
+    Note any contradictions or expected findings that are not present, which weaken the likelihood of this diagnosis.
+
+    - Diagnosis 2
+    Supporting Findings:
+    Enumerate the details from the case that favor this diagnosis.
+      Opposing Findings or Missing Evidence:
+    Identify evidence or typical features that are lacking or that argue against this diagnosis.
+
+      - Diagnosis 3
+      Supporting Findings:
+      Describe the supporting evidence from the case that aligns with this diagnosis.
+        Opposing Findings or Missing Evidence:
+          Mention any inconsistencies or missing elements that reduce its probability.
+
+        etc, you can continue to increase the number of diagnoses as needed.
+
+        Part 2 – Final Diagnosis:
+      After considering the supporting and opposing points for each potential diagnosis, provide your final, single best diagnosis and explain why it is the most likely conclusion. 
+
+    2. Then ask another member of the team to review and critique the initial assessment
+    3. Facilitate a discussion between team members to resolve any disagreements
+    4. Guide the team toward a consensus diagnosis and
+    5. Ensure that the diagnoses are as specific as possible rather than general terms
+    6. Finalize a comprehensive differential diagnosis 
+    7. One primary diagnosis as specific as possible that is the most likely diagnosis aggreed by all team members
+    
+    Throughout this process, delegate tasks appropriately, ask clarifying questions, and synthesize the team's collective expertise.
+    
+    IMPORTANT: When delegating work, you MUST use the other agents and not perform the task yourself
+    
+    CRITICAL: When delegating work, you MUST use the EXACT role names of your team members:
+    - For the Primary Diagnostician, use: "Primary Diagnostician"
+    - For the Diagnostic Reviewer, use: "Diagnostic Reviewer"
+    
+    Note: When delegating work to your team members, provide the task and context as simple text descriptions, not as objects or dictionaries.
+    
+    The goal is to simulate a realistic clinical case discussion that leverages the strengths of each team member.
+    
+  expected_output: >
+    A comprehensive team-based differential diagnosis report that includes:
+    1. Executive summary of the case
+    2. Initial differential diagnosis from the Primary Diagnostician
+    3. Critical review from the Diagnostic Reviewer
+    4. Discussion points and resolution of disagreements
+    5. Final consensus most likely diagnosis as specific as possible (prioritized)
+    6. One primary diagnosis as specific as possible that is the most likely diagnosis aggreed by all team members
+    7. Recommended next steps for diagnosis confirmation
+    
+    
+    Format as markdown without code blocks.
+  agents:
+    - senior_internist
+    - internist_one
+    - internist_two

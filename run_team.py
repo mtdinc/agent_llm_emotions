@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""
+r"""
 Script to run different team configurations with different medical cases.
 
 IMPORTANT: Before running this script, make sure to activate the virtual environment:
@@ -15,13 +15,18 @@ import shutil
 
 def check_venv():
     """Check if the virtual environment is activated."""
-    if not hasattr(sys, 'real_prefix') and not (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
-        print("ERROR: Virtual environment is not activated!")
-        print("Please activate the virtual environment before running this script:")
+    # Check if the virtual environment is activated by looking for the VIRTUAL_ENV environment variable
+    if 'VIRTUAL_ENV' not in os.environ:
+        print("WARNING: Virtual environment may not be activated!")
+        print("It's recommended to activate the virtual environment before running this script:")
         print("  On macOS/Linux: source venv/bin/activate")
         print("  On Windows: venv\\Scripts\\activate")
-        sys.exit(1)
-    print("✅ Virtual environment is activated.")
+        # Ask for confirmation to continue
+        response = input("Continue anyway? (y/n): ")
+        if response.lower() != 'y':
+            sys.exit(1)
+    else:
+        print("✅ Virtual environment is activated.")
 
 def update_config(team_number):
     """
@@ -169,24 +174,69 @@ def run_team(team_number, case_id, stage=1):
     except Exception as e:
         print(f"Unexpected error: {e}")
 
+def get_all_case_ids(stage):
+    """
+    Get all case IDs available in the specified stage directory.
+    
+    Args:
+        stage (int): The stage (1 or 2)
+        
+    Returns:
+        list: A sorted list of case IDs
+    """
+    stage_dir = Path(f"cases/stage_{stage}")
+    case_files = list(stage_dir.glob(f"*_s{stage}.md"))
+    # Extract case IDs from filenames (e.g., "1572_s1.md" -> "1572")
+    case_ids = [file.stem.split('_')[0] for file in case_files]
+    return sorted(case_ids)  # Sort to process in order
+
 def main():
     """Main function to parse command line arguments and run the team."""
-    if len(sys.argv) < 3:
-        print("Usage: python run_team.py TEAM_NUMBER CASE_ID [STAGE]")
+    if len(sys.argv) < 2:
+        print("Usage: python run_team.py TEAM_NUMBER [CASE_ID] [STAGE]")
         print("  TEAM_NUMBER: 1, 2, 3, or 4")
         print("    1: Collaborative team")
         print("    2: Mixed team (one difficult member)")
         print("    3: Difficult team (two difficult members)")
         print("    4: Baseline team (no personality traits)")
-        print("  CASE_ID: e.g., 1572")
+        print("  CASE_ID: e.g., 1572 (if omitted, all cases in the stage will be run)")
         print("  STAGE: 1 or 2 (default: 1)")
         return
     
     team_number = int(sys.argv[1])
-    case_id = sys.argv[2]
-    stage = int(sys.argv[3]) if len(sys.argv) > 3 else 1
     
-    run_team(team_number, case_id, stage)
+    # Default stage is 1
+    stage = 1
+    case_id = None
+    
+    # Parse remaining arguments
+    if len(sys.argv) > 2:
+        # Check if the second argument is a stage number (1 or 2)
+        if sys.argv[2].isdigit() and int(sys.argv[2]) in [1, 2]:
+            # It's a stage number
+            stage = int(sys.argv[2])
+        else:
+            # It's a case ID
+            case_id = sys.argv[2]
+            # Check if there's a stage specified
+            if len(sys.argv) > 3:
+                stage = int(sys.argv[3])
+    
+    # If case_id is provided, run just that case
+    if case_id:
+        run_team(team_number, case_id, stage)
+    else:
+        # Run all cases in the specified stage
+        case_ids = get_all_case_ids(stage)
+        if not case_ids:
+            print(f"No cases found for stage {stage}")
+            return
+        
+        print(f"Running Team {team_number} on all cases in Stage {stage}")
+        print(f"Found {len(case_ids)} cases: {', '.join(case_ids)}")
+        
+        for i, case_id in enumerate(case_ids):
+            print(f"\n[{i+1}/{len(case_ids)}] Processing case {case_id}...")
+            run_team(team_number, case_id, stage)
+            print(f"Completed case {case_id}")
 
-if __name__ == "__main__":
-    main()

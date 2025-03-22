@@ -9,33 +9,77 @@ from agent_board_v2.crew import AgentBoardV2
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 # Sample medical case for testing the differential diagnosis system
-SAMPLE_MEDICAL_CASE = """CC: 32 y/o M with 5 days of bilateral lower extremity weakness & pain  
+SAMPLE_MEDICAL_CASE = """
+Chief Concern: 
+73 yo Male presents with 4 weeks of bilateral lower leg swelling & fatigue
 
-HPI: While getting up from his sofa, he developed acute pain in his right calf followed by acute weakness, to the point that he couldn't move it at all. An hour later, a similar event occurred on the left side. Over the next 5 days, he had to crawl to move. This has never happened before.  
-History of anorexia & 10-pound weight loss last month  
+HPI:
+Feeling generally unwell, worse in last 4 weeks. No orthopnea, PND, chest pain. Intermittent nausea and vomiting not triggered byfood - no abdominal pain, no melena or hematochezia.
 
-ROS: (-) numbness, paresthesia, back pain  
+РМН:
+Aortic Stenosis (TAVR in 2023)
+DM2
+HPT
+HFpEF
 
-PMH: No relevant history  
+Meds:
+Metformin
+Amlodipine
+Atorvastatin
+SGLT2-inhibitor Soc Hx:
+Lives in Central Valley
+California. No travel
+overseas in 30 years.
+Electrician
+Adopted alternative
+lifestyle, travelling in
+truck. Bathing at rest
+stops. No dietary
+changes. Eating less
+healthy food.
+Health-Related
+Behaviors: No
+substances
 
-Meds: None  
+Allergies: 
+None
 
-Fam Hx: No relevant history  
+Vitals: T: 97 F BP: 167/100 mmHg RR: 16 HR: 80 bpm Sat:
+Exam: Comfortable. N pupils and dentition. Bipedal pitting edema.
+CV: Reg, No murmurs, No JVD
+Pulm: Clear
+Abd:
+Neuro: Normal
+Derm: Petechiae on shins
 
-Soc Hx: Moved from India to the Bay Area in 2015. Visited India in 2016. Uber driver  
+Notable Labs & Imaging:
 
-Health-Related Behaviors: 3-4 beers/day, 1-1.5 packs of cigarettes for the last 10 years, no recreational drugs.  
+Hematology:
+WBC: 2.8, neutrophil count: 2.4 (normal); lymphopenia, Hb: 7.5 (12 baseline)
+Plt: 16K; MCV: 91
 
-Allergies: NKDA  
-Vitals: T: Afebrile BP: Normal RR: Normal HR: Normal Sat: Normal  
-Exam: Gen: Thin appearing  
-HEENT: Normal  
-Neck: Normal  
-CV: Normal  
-Pulm: Normal  
-Abd: Normal  
-Neuro: AAOx3, Cranial Nerves normal, Strength: 5/5 upper limbs, 5/5 hip flexion bilaterally, 1/5 dorsiflexion bilaterally, eversion bilaterally, big toe dorsiflexion affected. Gait - foot drop, negative Romberg, Reflexes normal.  
-MSK: Normal  
+Chemistry:
+BUN 62, Creatinine 4.17 (baseline 1), AST 33, ALP 160, ALT 20, Albumin 3, Total Bilirubin 1.1, NT ProBNP 16000
+
+UA: 3+ protein, 3+ RBC, UPCR 1.52. PT, PTT, smear, hemolysis labs all normal. Normal B12, Iron, copper.
+
+Imaging:
+TTE: EF 55%, LV hypertrophy, diastolic dysfunction. Normal aortic valve. Normal right atrium and ventricle.
+
+Immune Studies:
+C-ANCA, P-ANCA both positive (MPO and PR3 positive). Anti-GBM negative. C3 50, C4 9 (both low). ANA 1:80; dsDNA negative, Anti-Histone positive. Anti-SSA, SSB negative. Cryoglobulins negative.
+
+Microbiology:
+Blood cultures x 3 negative. Hep B immune, Hep C negative, HIV negative. TPPA and RPR positive: 1:64. Coxiella negative.
+
+Renal Biopsy:
+Pauci-Immune Crescentic GN (Moderate immune complex deposition in mesangium and subendothelium).
+
+BMAT:
+Erythroid hyperplasia. No dysplasia, no vacuoles, no infiltrative process.
+
+Patient started on Rituximab - 1 week later, worsening creatinine needing dialysis. 
+
 
 """
 

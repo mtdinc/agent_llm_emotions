@@ -26,8 +26,8 @@ class AgentBoardV2():
             verbose=True,
             allow_delegation=True,
             allowed_agents=["Primary Diagnostician", "Diagnostic Reviewer"],
-            memory=False,  # Enable memory to remember interactions
-            max_iter=25  # Prevent infinite loops
+            memory=True,  # Enable memory to remember interactions
+            max_iter=3  # Prevent infinite loops
         )
         
     @agent
@@ -38,7 +38,7 @@ class AgentBoardV2():
             backstory="You're a highly experienced general medicine internist with over 15 years of clinical practice and a reputation for diagnostic excellence.",
             verbose=True,
             allow_delegation=False,
-            memory=False  # Enable memory to remember interactions
+            memory=True  # Enable memory to remember interactions
         )
 
     @agent
@@ -49,7 +49,7 @@ class AgentBoardV2():
             backstory="You're a distinguished general medicine internist with 20 years of experience, including 10 years as a clinical educator and diagnostic consultant.",
             verbose=True,
             allow_delegation=False,
-            memory=False  # Enable memory to remember interactions
+            memory=True  # Enable memory to remember interactions
         )
 
     # Single task for the entire medical case analysis

@@ -52,35 +52,6 @@ Abd:
 Neuro: Normal
 Derm: Petechiae on shins
 
-Notable Labs & Imaging:
-
-Hematology:
-WBC: 2.8, neutrophil count: 2.4 (normal); lymphopenia, Hb: 7.5 (12 baseline)
-Plt: 16K; MCV: 91
-
-Chemistry:
-BUN 62, Creatinine 4.17 (baseline 1), AST 33, ALP 160, ALT 20, Albumin 3, Total Bilirubin 1.1, NT ProBNP 16000
-
-UA: 3+ protein, 3+ RBC, UPCR 1.52. PT, PTT, smear, hemolysis labs all normal. Normal B12, Iron, copper.
-
-Imaging:
-TTE: EF 55%, LV hypertrophy, diastolic dysfunction. Normal aortic valve. Normal right atrium and ventricle.
-
-Immune Studies:
-C-ANCA, P-ANCA both positive (MPO and PR3 positive). Anti-GBM negative. C3 50, C4 9 (both low). ANA 1:80; dsDNA negative, Anti-Histone positive. Anti-SSA, SSB negative. Cryoglobulins negative.
-
-Microbiology:
-Blood cultures x 3 negative. Hep B immune, Hep C negative, HIV negative. TPPA and RPR positive: 1:64. Coxiella negative.
-
-Renal Biopsy:
-Pauci-Immune Crescentic GN (Moderate immune complex deposition in mesangium and subendothelium).
-
-BMAT:
-Erythroid hyperplasia. No dysplasia, no vacuoles, no infiltrative process.
-
-Patient started on Rituximab - 1 week later, worsening creatinine needing dialysis. 
-
-
 """
 
 def run():

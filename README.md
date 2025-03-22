@@ -116,7 +116,7 @@ source ../venv/bin/activate  # On macOS/Linux
 # venv\Scripts\activate  # On Windows
 
 # Run the script
-python run_team.py TEAM_NUMBER CASE_ID [STAGE]
+python run_team.py TEAM_NUMBER [CASE_ID] [STAGE] [OPTIONS]
 ```
 
 Parameters:
@@ -126,22 +126,39 @@ Parameters:
   - Stage 1: Initial patient presentation without lab results
   - Stage 2: Same presentation plus lab results and imaging
 
-Example:
+Options:
+- `-p, --provider`: Model provider (openai or anthropic)
+- `-m, --model`: Model name (e.g., gpt-4o for OpenAI or claude-3-5-haiku-20241022 for Anthropic)
+
+Examples:
 ```bash
-python run_team.py 1 1572 1  # Run Team 1 on Case 1572, Stage 1
+# Run Team 1 on Case 1572, Stage 1
+python run_team.py 1 1572 1
+
+# Run Team 2 on Case 1573, Stage 2 using OpenAI's GPT-4o model
+python run_team.py 2 1573 2 --provider openai --model gpt-4o
+
+# Run Team 3 on Case 1572, Stage 1 using Anthropic's Claude model
+python run_team.py 3 1572 1 --provider anthropic --model claude-3-5-haiku-20241022
 ```
 
 The script will:
 1. Check if the virtual environment is activated
 2. Update the configuration files to use the specified team and case
-3. Run the crew and save the output to a file named `medical_case_analysis_team{team_number}_case{case_id}_stage{stage}.md`
+3. Update the .env file with the specified model provider and name (if provided)
+4. Run the crew and save the output to a file in the `output` directory:
+   ```
+   output/result_team{team_number}_case{case_id}_stage{stage}_{provider}_{model}.md
+   ```
+   For example: `output/result_team2_case1573_stage1_openai_gpt4o.md`
 
 ## Project Structure
 
 ```
 agent_board_v2/
 ├── .gitignore
-├── knowledge/
+├── knowledge/           # Directory for medical knowledge base
+├── output/              # Directory for analysis results
 ├── pyproject.toml
 ├── README.md
 ├── .env
@@ -210,7 +227,7 @@ The system uses a hierarchical process to simulate a natural clinical discussion
 
 ### Output
 
-The system generates a comprehensive report saved as `medical_case_analysis.md` that includes:
+The system generates a comprehensive report that includes:
 
 1. Executive summary of the case
 2. Initial differential diagnosis from the Primary Diagnostician

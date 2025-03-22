@@ -9,9 +9,11 @@ IMPORTANT: Before running this script, make sure to activate the virtual environ
 
 import sys
 import os
+import argparse
 from pathlib import Path
 import subprocess
 import shutil
+import re
 
 def check_venv():
     """Check if the virtual environment is activated."""
@@ -54,6 +56,52 @@ def update_config(team_number):
         file.write(new_content)
     
     print(f"✅ Updated crew.py to use Team {team_number} configuration.")
+
+def update_env_model(provider, model_name):
+    """
+    Update the .env file with the specified model provider and name.
+    
+    Args:
+        provider (str): The model provider (openai or anthropic)
+        model_name (str): The model name
+    """
+    # Validate provider
+    if provider.lower() not in ['openai', 'anthropic']:
+        print(f"Error: Invalid provider '{provider}'. Must be 'openai' or 'anthropic'.")
+        sys.exit(1)
+    
+    # Path to the .env file
+    env_file = Path(".env")
+    
+    # Check if .env file exists
+    if not env_file.exists():
+        print("Error: .env file not found.")
+        sys.exit(1)
+    
+    # Read the current content
+    with open(env_file, 'r') as file:
+        lines = file.readlines()
+    
+    # Update the MODEL line
+    updated_lines = []
+    model_updated = False
+    
+    for line in lines:
+        if line.startswith('MODEL='):
+            updated_lines.append(f"MODEL={provider.lower()}/{model_name}\n")
+            model_updated = True
+        else:
+            updated_lines.append(line)
+    
+    # If MODEL line wasn't found, add it
+    if not model_updated:
+        updated_lines.append(f"MODEL={provider.lower()}/{model_name}\n")
+    
+    # Write the updated content
+    with open(env_file, 'w') as file:
+        file.writelines(updated_lines)
+    
+    print(f"✅ Updated .env to use {provider}/{model_name}")
 
 def load_case(case_id, stage=1):
     """
@@ -124,7 +172,18 @@ def update_main_py(case_id, stage):
     
     print(f"✅ Updated main.py to use Case {case_id} Stage {stage}.")
 
-def run_team(team_number, case_id, stage=1):
+def ensure_output_dir():
+    """
+    Ensure the output directory exists.
+    
+    Returns:
+        Path: The path to the output directory
+    """
+    output_dir = Path("output")
+    output_dir.mkdir(exist_ok=True)
+    return output_dir
+
+def run_team(team_number, case_id, stage=1, provider=None, model_name=None):
     """
     Run a specific team configuration with a specific case.
     
@@ -132,6 +191,8 @@ def run_team(team_number, case_id, stage=1):
         team_number (int): The team configuration to use (1, 2, 3, or 4)
         case_id (str): The ID of the case to run
         stage (int): The stage of the case (1 or 2)
+        provider (str, optional): The model provider (openai or anthropic)
+        model_name (str, optional): The model name
     """
     # Validate inputs
     if team_number not in [1, 2, 3, 4]:
@@ -150,8 +211,14 @@ def run_team(team_number, case_id, stage=1):
     update_config(team_number)
     update_main_py(case_id, stage)
     
+    # Ensure output directory exists
+    output_dir = ensure_output_dir()
+    
     # Set the output file name
-    output_file = f"medical_case_analysis_team{team_number}_case{case_id}_stage{stage}.md"
+    if provider and model_name:
+        output_file = output_dir / f"result_team{team_number}_case{case_id}_stage{stage}_{provider}_{model_name}.md"
+    else:
+        output_file = output_dir / f"result_team{team_number}_case{case_id}_stage{stage}.md"
     
     # Make a backup of the original medical_case_analysis.md if it exists
     if os.path.exists("medical_case_analysis.md"):
@@ -192,51 +259,51 @@ def get_all_case_ids(stage):
 
 def main():
     """Main function to parse command line arguments and run the team."""
-    if len(sys.argv) < 2:
-        print("Usage: python run_team.py TEAM_NUMBER [CASE_ID] [STAGE]")
-        print("  TEAM_NUMBER: 1, 2, 3, or 4")
-        print("    1: Collaborative team")
-        print("    2: Mixed team (one difficult member)")
-        print("    3: Difficult team (two difficult members)")
-        print("    4: Baseline team (no personality traits)")
-        print("  CASE_ID: e.g., 1572 (if omitted, all cases in the stage will be run)")
-        print("  STAGE: 1 or 2 (default: 1)")
-        return
+    parser = argparse.ArgumentParser(description='Run different team configurations with different medical cases.')
     
-    team_number = int(sys.argv[1])
+    # Required arguments
+    parser.add_argument('team_number', type=int, choices=[1, 2, 3, 4],
+                        help='Team configuration to use (1: Collaborative, 2: Mixed, 3: Difficult, 4: Baseline)')
     
-    # Default stage is 1
-    stage = 1
-    case_id = None
+    # Optional arguments
+    parser.add_argument('case_id', nargs='?', default=None,
+                        help='Case ID to run (e.g., 1572). If omitted, all cases in the stage will be run.')
+    parser.add_argument('stage', nargs='?', type=int, choices=[1, 2], default=1,
+                        help='Stage of the case (1 or 2). Default: 1')
     
-    # Parse remaining arguments
-    if len(sys.argv) > 2:
-        # Check if the second argument is a stage number (1 or 2)
-        if sys.argv[2].isdigit() and int(sys.argv[2]) in [1, 2]:
-            # It's a stage number
-            stage = int(sys.argv[2])
-        else:
-            # It's a case ID
-            case_id = sys.argv[2]
-            # Check if there's a stage specified
-            if len(sys.argv) > 3:
-                stage = int(sys.argv[3])
+    # Model configuration arguments
+    parser.add_argument('-p', '--provider', choices=['openai', 'anthropic'], metavar='PROVIDER',
+                        help='Model provider (openai or anthropic)')
+    parser.add_argument('-m', '--model', dest='model_name',
+                        help='Model name (e.g., gpt-4o or claude-3-7-sonnet-20250219 claude-3-5-haiku-20241022 )')
+    
+    args = parser.parse_args()
+    
+    # Update model configuration if provided
+    if args.provider and args.model_name:
+        update_env_model(args.provider, args.model_name)
+    elif args.provider or args.model_name:
+        print("Error: Both --provider and --model must be specified together.")
+        sys.exit(1)
     
     # If case_id is provided, run just that case
-    if case_id:
-        run_team(team_number, case_id, stage)
+    if args.case_id:
+        run_team(args.team_number, args.case_id, args.stage, args.provider, args.model_name)
     else:
         # Run all cases in the specified stage
-        case_ids = get_all_case_ids(stage)
+        case_ids = get_all_case_ids(args.stage)
         if not case_ids:
-            print(f"No cases found for stage {stage}")
+            print(f"No cases found for stage {args.stage}")
             return
         
-        print(f"Running Team {team_number} on all cases in Stage {stage}")
+        print(f"Running Team {args.team_number} on all cases in Stage {args.stage}")
         print(f"Found {len(case_ids)} cases: {', '.join(case_ids)}")
         
         for i, case_id in enumerate(case_ids):
             print(f"\n[{i+1}/{len(case_ids)}] Processing case {case_id}...")
-            run_team(team_number, case_id, stage)
+            run_team(args.team_number, case_id, args.stage, args.provider, args.model_name)
             print(f"Completed case {case_id}")
 
+# Call the main function when the script is run directly
+if __name__ == "__main__":
+    main()

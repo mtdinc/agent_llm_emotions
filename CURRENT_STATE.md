@@ -39,6 +39,8 @@ The project structure has been successfully created using the CrewAI CLI command
 - **Senior Internist Manager Role**: ✅ Completed
 - **Natural Clinical Discussion Flow**: ✅ Completed
 - **Team Configurations**: ✅ Completed
+- **Model Selection System**: ✅ Completed
+- **Output Naming System**: ✅ Completed
 - **Medical Knowledge Tools**: ⏳ Pending
 - **Medical Knowledge Base**: ⏳ Pending
 - **Case Input/Output System**: ⏳ Pending
@@ -67,25 +69,51 @@ We've created four different team configurations to study how team dynamics affe
 
 ## Running Different Team Configurations
 
-To run different team configurations with various medical cases, you'll need to:
+The project now includes a `run_team.py` script that makes it easy to run different team configurations with different medical cases:
 
 1. **Activate the virtual environment** (as described above)
-2. **Modify the `crew.py` file** to use the desired team configuration:
-   
-   ```python
-   # In crew.py, change this line:
-   agents_config = 'config/agents_team1.yaml'  # Change to agents_team2.yaml, agents_team3.yaml, or agents_team4.yaml
-   ```
-
-3. **Run the crew** with a specific medical case:
+2. **Run the script** with the desired team configuration, case, and model:
    
    ```bash
    # Make sure you're in the agent_board_v2 directory
    cd agent_board_v2
    
-   # Run the crew
-   crewai run
+   # Run the script
+   python run_team.py TEAM_NUMBER [CASE_ID] [STAGE] [OPTIONS]
    ```
+
+Parameters:
+- `TEAM_NUMBER`: 1, 2, 3, or 4 (corresponding to the team configurations above)
+- `CASE_ID`: The ID of the case to run (e.g., 1572)
+- `STAGE`: 1 or 2 (default: 1)
+  - Stage 1: Initial patient presentation without lab results
+  - Stage 2: Same presentation plus lab results and imaging
+
+Options:
+- `-p, --provider`: Model provider (openai or anthropic)
+- `-m, --model`: Model name (e.g., gpt-4o for OpenAI or claude-3-5-haiku-20241022 for Anthropic)
+
+Examples:
+```bash
+# Run Team 1 on Case 1572, Stage 1
+python run_team.py 1 1572 1
+
+# Run Team 2 on Case 1573, Stage 2 using OpenAI's GPT-4o model
+python run_team.py 2 1573 2 --provider openai --model gpt-4o
+
+# Run Team 3 on Case 1572, Stage 1 using Anthropic's Claude model
+python run_team.py 3 1572 1 --provider anthropic --model claude-3-5-haiku-20241022
+```
+
+The script will:
+1. Check if the virtual environment is activated
+2. Update the configuration files to use the specified team and case
+3. Update the .env file with the specified model provider and name (if provided)
+4. Run the crew and save the output to a file in the `output` directory:
+   ```
+   output/result_team{team_number}_case{case_id}_stage{stage}_{provider}_{model}.md
+   ```
+   For example: `output/result_team2_case1573_stage1_openai_gpt4o.md`
 
 ## Dependencies
 
@@ -98,6 +126,8 @@ To run different team configurations with various medical cases, you'll need to:
 - README.md: Project documentation and setup instructions
 - crewai_documentation.md: Reference documentation for CrewAI
 - CURRENT_STATE.md: This file, documenting the current state of the project
+- run_team.py: Script to run different team configurations with different models
+- output/: Directory containing analysis results from different runs
 - agent_board_v2/: Project directory containing:
   - .env: Environment variables with API keys and model configuration
   - src/agent_board_v2/: Source code directory with:

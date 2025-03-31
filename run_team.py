@@ -268,23 +268,21 @@ def main():
     # Optional arguments
     parser.add_argument('case_id', nargs='?', default=None,
                         help='Case ID to run (e.g., 1572). If omitted, all cases in the stage will be run.')
-    parser.add_argument('stage', nargs='?', type=int, choices=[1, 2], default=1,
-                        help='Stage of the case (1 or 2). Default: 1')
+    parser.add_argument('stage', nargs='?', type=int, choices=[1, 2], default=2,
+                        help='Stage of the case (1 or 2). Default: 2')
     
     # Model configuration arguments
     parser.add_argument('-p', '--provider', choices=['openai', 'anthropic'], metavar='PROVIDER',
-                        help='Model provider (openai or anthropic)')
+                        default='anthropic',
+                        help='Model provider (openai or anthropic). Default: anthropic')
     parser.add_argument('-m', '--model', dest='model_name',
-                        help='Model name (e.g., gpt-4o or claude-3-7-sonnet-20250219 claude-3-5-haiku-20241022 )')
+                        default='claude-3-5-haiku-20241022',
+                        help='Model name (e.g., gpt-4o or claude-3-5-haiku-20241022). Default: claude-3-5-haiku-20241022')
     
     args = parser.parse_args()
     
-    # Update model configuration if provided
-    if args.provider and args.model_name:
-        update_env_model(args.provider, args.model_name)
-    elif args.provider or args.model_name:
-        print("Error: Both --provider and --model must be specified together.")
-        sys.exit(1)
+    # Update model configuration
+    update_env_model(args.provider, args.model_name)
     
     # If case_id is provided, run just that case
     if args.case_id:

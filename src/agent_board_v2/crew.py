@@ -12,7 +12,7 @@ class AgentBoardV2():
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
     # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    agents_config = 'config/agents_team1.yaml'
+    agents_config = 'config/agents_team2.yaml'
     tasks_config = 'config/tasks.yaml'
 
     # If you would like to add tools to your agents, you can learn more about it here:

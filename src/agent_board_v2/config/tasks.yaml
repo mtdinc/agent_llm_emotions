@@ -54,12 +54,10 @@ medical_case_analysis:
   expected_output: >
     A comprehensive team-based differential diagnosis report that includes:
     1. Executive summary of the case
-    2. Initial differential diagnosis from the Primary Diagnostician
-    3. Critical review from the Diagnostic Reviewer
-    4. Discussion points and resolution of disagreements
-    5. Final consensus most likely diagnosis as specific as possible (prioritized)
-    6. One primary diagnosis as specific as possible that is the most likely diagnosis aggreed by all team members
-    7. Recommended next steps for diagnosis confirmation
+    2. Discussion points and resolution of disagreements
+    3. Final consensus most likely differential diagnoses as specific as possible (prioritized)
+    4. One primary diagnosis as specific as possible that is the most likely diagnosis aggreed by all team members
+    5. Recommended next steps for diagnosis confirmation
     
     
     Format as markdown without code blocks.

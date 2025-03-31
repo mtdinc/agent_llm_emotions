@@ -9,48 +9,35 @@ from agent_board_v2.crew import AgentBoardV2
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 # Sample medical case for testing the differential diagnosis system
-SAMPLE_MEDICAL_CASE = """
-Chief Concern: 
-73 yo Male presents with 4 weeks of bilateral lower leg swelling & fatigue
+SAMPLE_MEDICAL_CASE = """CC: 53-year-old male was transferred due to cough, dyspnea, and fevers for 2 weeks.
 
-HPI:
-Feeling generally unwell, worse in last 4 weeks. No orthopnea, PND, chest pain. Intermittent nausea and vomiting not triggered byfood - no abdominal pain, no melena or hematochezia.
+HPI: Has minimal health care exposure. Presented to urgent care and was found to be hypoxic, leading to transfer to the hospital. Productive cough with brown sputum, intermittent fevers.
 
-РМН:
-Aortic Stenosis (TAVR in 2023)
-DM2
-HPT
-HFpEF
+ROS: Poor oral intake, unintentional weight loss over the last 2 months.
 
-Meds:
-Metformin
-Amlodipine
-Atorvastatin
-SGLT2-inhibitor Soc Hx:
-Lives in Central Valley
-California. No travel
-overseas in 30 years.
-Electrician
-Adopted alternative
-lifestyle, travelling in
-truck. Bathing at rest
-stops. No dietary
-changes. Eating less
-healthy food.
-Health-Related
-Behaviors: No
-substances
+PMH: Tobacco use disorder, otherwise none.
 
-Allergies: 
-None
+Meds: None. Fam Hx: Brother passed away from lung cancer, mother has COPD and colon cancer.
 
-Vitals: T: 97 F BP: 167/100 mmHg RR: 16 HR: 80 bpm Sat:
-Exam: Comfortable. N pupils and dentition. Bipedal pitting edema.
-CV: Reg, No murmurs, No JVD
-Pulm: Clear
-Abd:
-Neuro: Normal
-Derm: Petechiae on shins
+Soc Hx: Wood stove in house, worked in landscaping, no travel. Lives in North Carolina.
+
+Health-Related Behaviors: Smoking (20 pack-year), sexually active with one partner.
+
+Allergies: Codeine.
+
+Vitals: T: 99.3°F (37.2°C) BP: 116/71 HR: 121 Sat: 99% on 4L of O2 by nasal cannula. Exam: Gen: 14.8 BMI, ill-appearing and cachectic. HEENT: Unremarkable. CV: Tachycardia, otherwise unremarkable. Pulm: Limited air movement, diffuse rhonchi. Abd: Soft, non-tender, bowel sounds normal. Neuro: No focal deficits, AO x 3. MSK: No edema, strong peripheral pulses.
+
+Notable Labs & Imaging:
+Hematology:
+WBC: 22.8 Hgb: 12.5 Plt: 494 MCV: 94.6
+
+Chemistry:
+Na: 135 K: 3.8 Cr: 0.47 BUN: 13 Ca: 8.4 Ph: 2.2 Mg: 1.5 Glu: 67 Cl: 102 HCO3: 25 Anion gap normal. Lactic acid 1.4 AST: 56 ALT: 33 ALP: 158 (slightly high) Bili: 0.4 Total protein: 5.6 Albumin: 2.5 HIV & COVID negative.
+
+Imaging:
+EKG: Sinus tachycardia with HR of 132 bpm. CXR: Hyperinflation, bilateral dense areas of consolidations and cavitary lesions. CT: No PE, dense LUL consolidation + cavity, large RUL cavity with gas/fluid level, bilateral areas of nodular consolidation, bilateral hilar LAD.
+
+S. pneumo, Histo, Cocci, Crypto, Legionella, Aspergillus negative. Quantiferon negative.
 
 """
 
